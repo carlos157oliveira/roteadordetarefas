@@ -1,4 +1,4 @@
-package com.github.carlos157oliveira.roteadordetarefas.data.dao.converters
+package com.github.carlos157oliveira.roteadordetarefas.data.converters
 
 import androidx.room.TypeConverter
 import java.util.*

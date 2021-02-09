@@ -20,7 +20,7 @@ class TarefaViewModel(private val tarefaDAO: TarefaDAO) : ViewModel() {
                 nome = nomeTarefa,
                 dataReferencia = dataReferencia
             )
-            tarefa.id = tarefaDAO.insert(tarefa)
+            tarefa.id = tarefaDAO.inserir(tarefa)
             _tarefaSalva.postValue(tarefa)
         }
     }
@@ -30,17 +30,5 @@ class TarefaViewModel(private val tarefaDAO: TarefaDAO) : ViewModel() {
             _tarefas.postValue(tarefaDAO.getTarefas())
         }
     }
-
-    class ViewModelFactory<K, L, Q: Any>(private val viewModelType: Class<K>, private val dataSourceType: Class<L>, private val dataSource: Q) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(viewModelType)) {
-                return modelClass.getConstructor(dataSourceType)
-                    .newInstance(dataSource)
-            }
-            throw IllegalArgumentException("Unknown viewModel class")
-        }
-    }
-
 
 }

@@ -9,7 +9,7 @@ import com.github.carlos157oliveira.roteadordetarefas.data.model.Tarefa
 interface TarefaDAO {
 
     @Insert
-    suspend fun insert(tarefa: Tarefa): Long
+    suspend fun inserir(tarefa: Tarefa): Long
 
     @Query("DELETE FROM tarefas where id = :id")
     suspend fun delete(id: Long)

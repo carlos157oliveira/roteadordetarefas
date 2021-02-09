@@ -10,6 +10,7 @@ import com.github.carlos157oliveira.roteadordetarefas.R
 import com.github.carlos157oliveira.roteadordetarefas.data.dao.TarefaDAO
 import com.github.carlos157oliveira.roteadordetarefas.data.database.AppDatabase
 import com.github.carlos157oliveira.roteadordetarefas.data.model.Tarefa
+import com.github.carlos157oliveira.roteadordetarefas.ui.viewmodelfactory.ViewModelFactory
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*
@@ -26,20 +27,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        /*
-        viewModel = ViewModelProvider(
-            viewModelStore, TarefaViewModel.ViewModelFactory(
-                    AppDatabase.getInstance(this).tarefaDAO
-            )
-        ).get(TarefaViewModel::class.java)
-
-         */
 
         viewModel = ViewModelProvider(
-                viewModelStore, TarefaViewModel.ViewModelFactory(TarefaViewModel::class.java, TarefaDAO::class.java, AppDatabase.getInstance(this).tarefaDAO)
+                viewModelStore, ViewModelFactory(
+                    TarefaViewModel::class.java,
+                    AppDatabase.getInstance(this).tarefaDAO)
         ).get(TarefaViewModel::class.java)
-
-
 
         this.viewModel.tarefaSalva.observe(this, Observer<Tarefa> { tarefa: Tarefa ->
             this.tarefaAdapter.tarefas += tarefa
