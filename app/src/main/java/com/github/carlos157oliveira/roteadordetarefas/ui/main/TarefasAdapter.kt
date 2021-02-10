@@ -1,15 +1,23 @@
 package com.github.carlos157oliveira.roteadordetarefas.ui.main
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.github.carlos157oliveira.roteadordetarefas.R
 import com.github.carlos157oliveira.roteadordetarefas.data.model.Tarefa
+import com.github.carlos157oliveira.roteadordetarefas.ui.tarefapessoas.TarefaPessoasActivity
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
 
-class TarefasAdapter : RecyclerView.Adapter<TarefasAdapter.TarefaViewHolder>() {
+interface BtnPessoasClickListener {
+    fun onPessoasBtnClicked(tarefaId : Long)
+}
+
+class TarefasAdapter(private val btnPessoasClickListener : BtnPessoasClickListener) :
+        RecyclerView.Adapter<TarefasAdapter.TarefaViewHolder>() {
 
     var tarefas = listOf<Tarefa>()
         set(value) {
@@ -23,11 +31,18 @@ class TarefasAdapter : RecyclerView.Adapter<TarefasAdapter.TarefaViewHolder>() {
         private val textViewDataReferencia = itemView.findViewById<MaterialTextView>(
             R.id.textViewDataReferencia
         )
+
+        private val btnPessoas = itemView.findViewById<ImageButton>(R.id.btn_pessoas)
+
         val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 
         fun bind(tarefa: Tarefa) {
             this.textViewNomeTarefa.text = tarefa.nome
             this.textViewDataReferencia.text = this.dateFormat.format(tarefa.dataReferencia)
+
+            btnPessoas.setOnClickListener( {
+                btnPessoasClickListener.onPessoasBtnClicked(tarefa.id)
+            })
         }
     }
 
