@@ -14,11 +14,11 @@ class TarefaViewModel(private val tarefaDAO: TarefaDAO) : ViewModel() {
     private val _tarefaSalva = MutableLiveData<Tarefa>()
     val tarefaSalva: LiveData<Tarefa> get() = _tarefaSalva
 
-    fun addTarefa(nomeTarefa: String, dataReferencia: Date) {
+    fun addTarefa(nomeTarefa: String, dataReferencia: Calendar) {
         this.viewModelScope.launch {
             val tarefa = Tarefa(
                 nome = nomeTarefa,
-                dataReferencia = dataReferencia
+                dataReferencia = Tarefa.normalizarData(dataReferencia)
             )
             tarefa.id = tarefaDAO.inserir(tarefa)
             _tarefaSalva.postValue(tarefa)

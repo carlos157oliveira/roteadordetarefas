@@ -45,7 +45,8 @@ class MainActivity : AppCompatActivity() {
         this.recyclerView.adapter = this.tarefaAdapter
 
         this.buttonAdicionar.setOnClickListener{
-            this.viewModel.addTarefa(this.editNomeTarefa.text.toString(), Date())
+
+            this.viewModel.addTarefa(this.editNomeTarefa.text.toString(), Calendar.getInstance())
         }
     }
 }
