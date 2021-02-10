@@ -12,11 +12,10 @@ import com.github.carlos157oliveira.roteadordetarefas.ui.tarefapessoas.TarefaPes
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
 
-interface BtnPessoasClickListener {
-    fun onPessoasBtnClicked(tarefaId : Long)
-}
 
-class TarefasAdapter(private val btnPessoasClickListener : BtnPessoasClickListener) :
+class TarefasAdapter(
+        private val onPessoasBtnClicked: (Long) -> Unit,
+        private val onTarefaPessoasBtnClicked: (Long) -> Unit) :
         RecyclerView.Adapter<TarefasAdapter.TarefaViewHolder>() {
 
     var tarefas = listOf<Tarefa>()
@@ -33,16 +32,20 @@ class TarefasAdapter(private val btnPessoasClickListener : BtnPessoasClickListen
         )
 
         private val btnPessoas = itemView.findViewById<ImageButton>(R.id.btn_pessoas)
+        private val btnTarefaPessoas = itemView.findViewById<ImageButton>(R.id.btn_tarefa_pessoas)
 
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+        private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
 
         fun bind(tarefa: Tarefa) {
             this.textViewNomeTarefa.text = tarefa.nome
             this.textViewDataReferencia.text = this.dateFormat.format(tarefa.dataReferencia)
 
-            btnPessoas.setOnClickListener( {
-                btnPessoasClickListener.onPessoasBtnClicked(tarefa.id)
-            })
+            btnPessoas.setOnClickListener {
+                onPessoasBtnClicked(tarefa.id)
+            }
+            btnTarefaPessoas.setOnClickListener {
+                onTarefaPessoasBtnClicked(tarefa.id)
+            }
         }
     }
 

@@ -12,17 +12,19 @@ import com.github.carlos157oliveira.roteadordetarefas.data.dao.TarefaDAO
 import com.github.carlos157oliveira.roteadordetarefas.data.database.AppDatabase
 import com.github.carlos157oliveira.roteadordetarefas.data.model.Tarefa
 import com.github.carlos157oliveira.roteadordetarefas.ui.pessoa.PessoaActivity
+import com.github.carlos157oliveira.roteadordetarefas.ui.pessoa.PessoaActivity.Companion.TAREFA_ID
+import com.github.carlos157oliveira.roteadordetarefas.ui.tarefapessoas.TarefaPessoasActivity
 import com.github.carlos157oliveira.roteadordetarefas.ui.viewmodelfactory.ViewModelFactory
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
-class MainActivity : AppCompatActivity(), BtnPessoasClickListener {
+class MainActivity : AppCompatActivity() {
 
     private val editNomeTarefa by lazy { findViewById<TextInputEditText>(R.id.editNomeTarefa) }
     private val buttonAdicionar by lazy { findViewById<MaterialButton>(R.id.buttonAdicionar) }
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerView) }
-    private val tarefaAdapter by lazy { TarefasAdapter(this) }
+    private val tarefaAdapter by lazy { TarefasAdapter(this::onPessoasBtnClicked, this::onTarefaPessoasBtnClicked) }
 
     private lateinit var viewModel: TarefaViewModel
 
@@ -52,12 +54,22 @@ class MainActivity : AppCompatActivity(), BtnPessoasClickListener {
         }
     }
 
-    override fun onPessoasBtnClicked(tarefaId: Long) {
+    fun onPessoasBtnClicked(tarefaId: Long) {
 
         var bundle = Bundle().apply { putLong(PessoaActivity.TAREFA_ID, tarefaId) }
 
         Intent(this, PessoaActivity::class.java).let {
             it.putExtra(PessoaActivity.PESSOA_ACTIVITY_EXTRA, bundle)
+            startActivity(it)
+        }
+    }
+
+    fun onTarefaPessoasBtnClicked(tarefaId: Long) {
+
+        var bundle = Bundle().apply { putLong(TarefaPessoasActivity.TAREFA_ID, tarefaId) }
+
+        Intent(this, TarefaPessoasActivity::class.java).let {
+            it.putExtra(TarefaPessoasActivity.TAREFA_PESSOAS_ACTIVITY_EXTRA, bundle)
             startActivity(it)
         }
     }

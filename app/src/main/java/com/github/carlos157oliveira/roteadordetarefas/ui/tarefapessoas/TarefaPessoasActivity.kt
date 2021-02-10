@@ -14,6 +14,11 @@ import java.util.*
 
 class TarefaPessoasActivity : AppCompatActivity() {
 
+    companion object {
+        const val TAREFA_PESSOAS_ACTIVITY_EXTRA = "TAREFA_PESSOAS_ACTIVITY_EXTRA"
+        const val TAREFA_ID = "TAREFA_ID"
+    }
+
     private val listView by lazy { findViewById<ListView>(R.id.listView) }
     private lateinit var viewModel: TarefaPessoasViewModel
 
@@ -23,30 +28,33 @@ class TarefaPessoasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tarefa_pessoas)
 
+        val tarefaId = this.intent.getBundleExtra(TAREFA_PESSOAS_ACTIVITY_EXTRA)?.getLong(TAREFA_ID)!!
+
         this.viewModel = ViewModelProvider(viewModelStore, ViewModelFactory(
             TarefaPessoasViewModel::class.java,
             AppDatabase.getInstance(this).tarefaPessoasDAO)
         ).get(TarefaPessoasViewModel::class.java)
 
-        this.viewModel.getPessoasTarefa(this.intent.getLongExtra("tarefaId", 0))
+        this.viewModel.getPessoasTarefa(tarefaId)
         this.viewModel.pessoasTarefa.observe(this, Observer { tarefaPessoas ->
+
+            val pessoas = tarefaPessoas.pessoas
+                    //.sortedBy { pessoa -> pessoa.ordem }
+
+            if(pessoas.isEmpty()) return@Observer
 
             val list = mutableListOf<String>()
             val calendarAtual = Calendar.getInstance()
             val diffInMilis =  calendarAtual.timeInMillis - tarefaPessoas.tarefa.dataReferencia.time
             val diffInDays: Long = diffInMilis / (24 * 60 * 60 * 1000)
 
-            val pessoas = tarefaPessoas.pessoas
-                .sortedBy { pessoa -> pessoa.ordem }
-
-            var idx: Int = diffInDays.toInt()
-            for( i in 0..29 ) {
+            var start: Int = diffInDays.toInt() % pessoas.size
+            for(idx in start until start + pessoas.size * 3) {
                 val p = pessoas[idx % pessoas.size]
                 val data = this.dateFormat.format(calendarAtual.time)
-                val texto = "%50s %11s".format(p.nome, data)
+                val texto = "%-40s %11s".format(p.nome, data)
                 list.add(texto)
                 calendarAtual.add(Calendar.DAY_OF_MONTH, 1)
-                idx++
             }
             this.listView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, list)
         })
