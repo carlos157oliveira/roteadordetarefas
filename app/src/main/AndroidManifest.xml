@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RoteadorDeTarefas">
+        <activity android:name=".ui.pessoa.PessoaActivity"></activity>
         <activity android:name=".ui.tarefapessoas.TarefaPessoasActivity"></activity>
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
