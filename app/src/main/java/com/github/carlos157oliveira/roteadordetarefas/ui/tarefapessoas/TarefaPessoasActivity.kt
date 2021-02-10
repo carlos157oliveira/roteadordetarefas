@@ -39,7 +39,7 @@ class TarefaPessoasActivity : AppCompatActivity() {
         this.viewModel.pessoasTarefa.observe(this, Observer { tarefaPessoas ->
 
             val pessoas = tarefaPessoas.pessoas
-                    //.sortedBy { pessoa -> pessoa.ordem }
+                    .sortedBy { pessoa -> pessoa.ordem }
 
             if(pessoas.isEmpty()) return@Observer
 
