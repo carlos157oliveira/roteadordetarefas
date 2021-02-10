@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RoteadorDeTarefas">
         <activity android:name=".ui.pessoa.PessoaActivity">
+        <activity android:name=".ui.tarefapessoas.TarefaPessoasActivity"></activity>
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
