@@ -112,12 +112,12 @@ class PessoaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pessoa)
 
-       /*intent.getBundleExtra(PESSOA_ACTIVITY_EXTRA)?.let {
+       intent.getBundleExtra(PESSOA_ACTIVITY_EXTRA)?.let {
             it.getLong(TAREFA_ID)?.let {
                 tarefaId = it
-                Log.e("caio.v", "tarefaId = $tarefaId")
+                Log.e("PessoaActivity", "tarefaId = $tarefaId")
             }
-        }*/
+        }
 
         viewModel = ViewModelProvider(this).get(PessoasViewModel::class.java).also {
             it.create(AppDatabase.getInstance(this).pessoaDAO)
